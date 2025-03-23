@@ -711,6 +711,14 @@ func createStartServiceOperation(
 			user,
 		)
 
+		// Add NET_ADMIN capability to docker containers
+		capabilities := map[docker_manager.ContainerCapability]bool{
+			docker_manager.NetAdmin: true,
+			docker_manager.SysAdmin: true,
+		}
+
+		createAndStartArgsBuilder.WithAddedCapabilities(capabilities)
+
 		if entrypointArgs != nil {
 			createAndStartArgsBuilder.WithEntrypointArgs(entrypointArgs)
 		}

@@ -7,6 +7,7 @@ package docker_manager
 
 const (
 	NetAdmin  ContainerCapability = "NET_ADMIN"
+	SysAdmin  ContainerCapability = "SYS_ADMIN"
 	SysPtrace ContainerCapability = "SYS_PTRACE"
 )
 
