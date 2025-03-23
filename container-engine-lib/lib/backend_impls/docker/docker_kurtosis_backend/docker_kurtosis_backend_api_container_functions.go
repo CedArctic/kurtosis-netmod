@@ -226,12 +226,15 @@ func (backend *DockerKurtosisBackend) CreateAPIContainer(
 		labelStrs,
 	).WithRestartPolicy(docker_manager.RestartOnFailure)
 
+	// Add NET_ADMIN capability to docker containers
+	capabilities := map[docker_manager.ContainerCapability]bool{
+		docker_manager.NetAdmin: true,
+		docker_manager.SysAdmin: true,
+	}
+
 	if shouldStartInDebugMode {
 		// Adding systrace capabilities when starting the debug server in the engine's container
-		capabilities := map[docker_manager.ContainerCapability]bool{
-			docker_manager.SysPtrace: true,
-		}
-		createAndStartArgsBuilder.WithAddedCapabilities(capabilities)
+		capabilities[docker_manager.SysPtrace] = true
 
 		// Setting security for debugging the engine's container
 		securityOpts := map[docker_manager.ContainerSecurityOpt]bool{
@@ -239,6 +242,8 @@ func (backend *DockerKurtosisBackend) CreateAPIContainer(
 		}
 		createAndStartArgsBuilder.WithSecurityOpts(securityOpts)
 	}
+
+	createAndStartArgsBuilder.WithAddedCapabilities(capabilities)
 
 	createAndStartArgs := createAndStartArgsBuilder.Build()
 
