@@ -240,6 +240,12 @@ yarn global add ts-protoc-gen
 yarn global add grpc-tools
 ```
 
+#### Static builds on Fedora
+Necessary, otherwise the build script will crash and complain about missing linking dependencies.
+``` 
+sudo dnf install glibc-static libstdc++-static
+```
+
 #### OpenAPI generators for Go and Typescript
 
 On MacOS:
@@ -249,8 +255,10 @@ yarn global add openapi-typescript@7.0.0-next.5
 ```
 
 On Ubuntu:
+~~go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@v1.16.2~~
+Instead install via npm. The build.sh has been modified to use `npx openapi-typescript`.
 ```bash
-go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@v1.16.2
+npm i -D openapi-typescript typescript
 yarn global add openapi-typescript@7.0.0-next.5
 ```
 
